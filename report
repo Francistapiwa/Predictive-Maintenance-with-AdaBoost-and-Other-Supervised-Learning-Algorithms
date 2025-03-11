@@ -1,0 +1,109 @@
+Francis Chapoterera
+francistapiwac@gmail.com
+
+Abstract
+Supervised learning is a machine learning paradigm where models are trained on labeled data to predict outcomes. In this report, I explore the application of Decision Trees (DT), Artificial Neural Networks (ANN), and Boosting Algorithms to predictive maintenance, a critical task in industrial settings. Predictive maintenance aims to identify potential equipment failures before they occur, reducing downtime and maintenance costs. These algorithms are particularly well-suited for this task because they can handle both numerical and categorical data, capture complex decision boundaries, and provide interpretable results.
+
+I analyzed two datasets: the Industrial Equipment Monitoring Dataset and the Machine Failure Prediction Dataset, using DT, ANN, and Boosting algorithms to classify equipment faults and machine failures. The results demonstrate the effectiveness of these algorithms in predictive maintenance applications, with Boosting showing the highest accuracy. Several visualizations, including confusion matrices, learning curves, and feature importance plots, are provided to illustrate the models' performance and insights.
+
+1 Datasets
+1.1 Source of the Datasets
+The data sets used in this report are:
+1. Industrial Equipment Monitoring Dataset:
+   - Source: This dataset contains simulated data representing real-time monitoring of industrial equipment such as turbines, compressors, and pumps. It is publicly available and was obtained from Kaggle.
+   - Purpose: The dataset is designed for fault detection and predictive maintenance applications in industrial settings.
+2. Machine Failure Prediction Dataset:
+   - Source: This dataset contains sensor data collected from various machines to predict failures. It is publicly available and was obtained from Kaggle.
+   - Purpose: The dataset is designed for predictive maintenance, enabling the identification of patterns that indicate potential machine failures.
+
+Table 1: The basic features of both datasets.
+| Data Set | Characteristics | Attribute Characteristics | Associated Tasks | Number of Instances | Number of Attributes |
+|----------|---------------|------------------------|------------------|------------------|----------------|
+| Dataset 1 | Multivariate | Real | Classification | 7672 | 7 |
+| Dataset 2 | Multivariate | Real | Classification | 944 | 10 |
+
+1.2 Preprocessing Steps
+Both datasets underwent preprocessing to prepare them for analysis. The steps included:
+- Handling Missing Values: Missing values in both datasets were handled using SimpleImputer with the mean strategy.
+- Handling Categorical Attributes: Categorical attributes such as equipment and location were one-hot encoded using pd.get_dummies().
+- Feature Scaling: Numerical features were standardized using StandardScaler to ensure compatibility with algorithms that require scaling (e.g., ANN).
+- Target Variable Encoding: The target variables were already binary, so no additional encoding was required:
+  - For the Industrial Equipment Monitoring Dataset, the target variable is faulty:
+    - 0: Not Faulty.
+    - 1: Faulty.
+  - For the Machine Failure Prediction Dataset, the target variable is fail:
+    - 0: No Failure.
+    - 1: Failure.
+
+1.3 Data Characteristics
+Both datasets contain categorical and numerical features. The histograms of classes from both datasets are shown in Figure 1. Class imbalance is evident in both datasets and must be accounted for in calculating the accuracy scoring function. A weighted scoring function was used in the analysis.
+
+2. Algorithms and Implementation
+
+2.1 Artificial Neural Networks (ANN)
+I implemented an Artificial Neural Network using MLPClassifier from sklearn. The network was tuned using GridSearchCV to find the best hyperparameters.
+- Algorithm: Multi-layer Perceptron (MLP) Classifier.
+- Hyperparameters Tuned:
+  - hidden_layer_sizes: [(50,), (100,), (50, 50)].
+  - activation: ['relu', 'tanh'].
+  - learning_rate_init: [0.001, 0.01, 0.1].
+- Preprocessing:
+  - Standardized numerical features.
+  - One-hot encoded categorical attributes.
+
+2.2 Decision Trees (DT)
+I implemented a Decision Tree Classifier with hyperparameter tuning using GridSearchCV. The model's complexity was controlled by limiting the maximum depth of the tree and specifying the minimum number of samples required for splitting and leaf nodes.
+- Algorithm: Decision Tree Classifier (with GridSearchCV for hyperparameter tuning).
+- Hyperparameters Tuned:
+  - max_depth: [3, 5, 7, None].
+  - min_samples_split: [2, 5, 10].
+- Preprocessing:
+  - Dropped irrelevant columns.
+  - Handled missing values with mean imputation.
+  - Standardized numerical features.
+
+2.3 Boosting Algorithm (AdaBoost)
+I implemented a Boosting Algorithm using AdaBoostClassifier with GridSearchCV for hyperparameter tuning.
+- Algorithm: AdaBoost Classifier.
+- Hyperparameters Tuned:
+  - n_estimators: [50, 100, 200].
+  - learning_rate: [0.01, 0.1, 1.0].
+- Preprocessing:
+  - Standardized numerical features.
+  - One-hot encoded categorical attributes.
+
+3.1 Performance Metrics
+The performance metrics for each algorithm on both datasets are summarized below:
+
+| Algorithm | Dataset | Accuracy | Precision | Recall | F1-Score |
+|-----------|--------|----------|----------|--------|---------|
+| Decision Tree (DT) | Industrial Equipment Monitoring | 0.88 | 0.87 | 0.88 | 0.87 |
+| | Machine Failure Prediction | 0.85 | 0.86 | 0.85 | 0.85 |
+| ANN | Industrial Equipment Monitoring | 0.90 | 0.89 | 0.90 | 0.89 |
+| | Machine Failure Prediction | 0.87 | 0.88 | 0.87 | 0.87 |
+| Boosting (AdaBoost) | Industrial Equipment Monitoring | 0.92 | 0.91 | 0.92 | 0.91 |
+| | Machine Failure Prediction | 0.89 | 0.90 | 0.89 | 0.89 |
+
+3.2 Learning Curves
+The learning curves for each algorithm are shown in Figure 2. These curves illustrate the model's performance on both training and validation data as a function of the training set size.
+
+3.3 Confusion Matrices
+The confusion matrices for each algorithm are shown in Figure 3. These matrices provide insights into the model's classification performance, including true positives, false positives, true negatives, and false negatives.
+
+3.4 Feature Importance
+The feature importance plots for the Decision Tree and Boosting algorithms are shown in Figure 4. These plots highlight the most significant features for failure prediction.
+
+4. Comparison and Discussion
+- Decision Trees, ANN, and Boosting showed strong performance, with Boosting achieving the highest accuracy.
+- Scaling numerical features and one-hot encoding categorical attributes improved the performance of ANN and Boosting algorithms.
+- Using GridSearchCV for hyperparameter tuning helped avoid overfitting and improved the generalization of the models.
+- Class imbalance was addressed using weighted scoring functions.
+
+5. Future Work and Improvements
+- Exploring additional ensemble methods such as Random Forest and Gradient Boosting.
+- Incorporating time-series analysis for improved fault detection.
+- Expanding the dataset with more real-world sensor readings to improve robustness.
+
+6. Conclusion
+This report explored Decision Trees, Artificial Neural Networks, and Boosting Algorithms for predictive maintenance tasks. The results demonstrate the effectiveness of these algorithms in identifying patterns and making accurate predictions, with Boosting showing superior performance. The insights gained from this analysis can guide engineers in prioritizing sensor data collection and maintenance efforts, ultimately reducing downtime and maintenance costs.
+
